@@ -1,32 +1,32 @@
 name: Build APK
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - main
-  workflow_dispatch:
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
+      - name: Checkout
         uses: actions/checkout@v4
-
-      - name: Setup Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.11"
 
       - name: Install dependencies
         run: |
-          pip install --upgrade pip
-          pip install buildozer cython==0.29.36
+          sudo apt update
+          sudo apt install -y python3-pip git zip unzip openjdk-17-jdk
 
-      - name: Accept Android SDK licenses
+      - name: Install Buildozer
         run: |
-          yes | sdkmanager --licenses || true
+          pip3 install --user buildozer cython==0.29.36
+
+      - name: Accept Android licenses
+        run: |
+          yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses || true
+          $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager "build-tools;37.0.0" || true
 
       - name: Build APK
         run: |
