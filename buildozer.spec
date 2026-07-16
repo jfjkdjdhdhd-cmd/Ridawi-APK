@@ -6,13 +6,13 @@
 [app]
 
 # (str) Title of your application
-title = My Application
+title =title = تطبيق ريداوي
 
 # (str) Package name
-package.name = myapp
+package.name = ridawi
 
 # (str) Package domain (needed for android/ios packaging)
-package.domain = org.test
+package.domain = com.ridawi
 
 # (str) Source code where the main.py live
 source.dir = .
