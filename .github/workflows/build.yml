@@ -1,10 +1,10 @@
 name: Build APK
 
 on:
-  workflow_dispatch:
   push:
     branches:
       - main
+  workflow_dispatch:
 
 jobs:
   build:
@@ -16,7 +16,17 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip install buildozer cython
+          sudo apt update
+          sudo apt install -y python3-pip git zip unzip openjdk-17-jdk
+
+      - name: Install Buildozer
+        run: |
+          pip3 install --user buildozer cython==0.29.36
+
+      - name: Accept Android SDK licenses
+        run: |
+          yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses || true
+          $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager "build-tools;37.0.0" || true
 
       - name: Build APK
         run: |
@@ -25,5 +35,5 @@ jobs:
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: APK
+          name: Ridawi-APK
           path: bin/*.apk
